@@ -30,6 +30,10 @@ Additionally, if you wish to have access to the upstream repo, i.e.
 (`the-virtual-brain/tvb-*`) you'll need to add this explicitly in
 the submodule. 
 
+Lastly, if you merge from `upstream/tvb-pack`, you may have to update
+`.gitsubmodules` to reflect your forks. We'll setup a script to make 
+this easier.
+
 ## The submodule workflow
 
 When you modify files tracked by the `tvb-pack` repo, use Git as
