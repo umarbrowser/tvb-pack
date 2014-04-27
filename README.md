@@ -44,10 +44,3 @@ version of the submodule.
 
 More details can be found at the Git SCM book's [description of 
 Git submodules](http://git-scm.com/book/en/Git-Tools-Submodules).
-
-## Contents
-
-Currently, this repo is in testing mode, not ready for general consumption.
-
-- [tvb-docs](https://github.com/the-virtual-brain/tvb-docs)
-
