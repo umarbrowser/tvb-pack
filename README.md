@@ -5,6 +5,8 @@ intended to make it easier to get started with TVB.
 
 ## Usage
 
+### Set up
+
 There are two usage scenarios: 1) use only the official repos for
 TVB 2) use your own forks of those repos. 
 
@@ -49,6 +51,22 @@ the submodule.
 Lastly, if you merge from `upstream/tvb-pack`, you may have to update
 `.gitsubmodules` to reflect your forks. We'll setup a script to make 
 this easier.
+
+### Virtual environments
+
+Create a TVB-ready virtual environment with all the necessary packages with 
+
+```
+scripts/mkenv.sh my_env_path
+```
+
+Then, in order to activate it and place each of the submodule's contents in the
+Python path
+
+```
+source scripts/env.sh my_env_path
+```
+
 
 ## The submodule workflow
 
