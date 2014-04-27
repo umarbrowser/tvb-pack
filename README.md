@@ -20,7 +20,7 @@ git submodule update
 Be patient, in some cases the repos are quite large.
 
 In the second case, you'll need to additionally, for each repo 
-where you have your own fork, modify the .gitsubmodules file correctly
+where you have your own fork, modify the `.gitmodules` file correctly
 *just after* cloning `tvb-pack` and 
 *before* performing the `submodule` commands in the listing above.
 
