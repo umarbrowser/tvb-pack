@@ -15,8 +15,6 @@ In the first case, you should fork this repo and clone it, e.g.
 git clone git@github.com:user/tvb-pack tvb
 git submodule init
 git submodule update
-git submodule foreach git submodule init
-git submodule foreach git submodule update
 ```
 
 Be patient, in some cases the repos are quite large.
@@ -25,6 +23,24 @@ In the second case, you'll need to additionally, for each repo
 where you have your own fork, modify the .gitsubmodules file correctly
 *just after* cloning `tvb-pack` and 
 *before* performing the `submodule` commands in the listing above.
+
+In case you have your own forks of each of the submodules, running
+
+```
+scripts/update-origins.sh username
+```
+
+will handle updating `.gitmodules` correctly. 
+
+If the subsequent `git submodule update` produces errors like 
+
+```
+fatal: reference is not a tree: 03dc58f782c7ac4fe65cecbb9d459e95d8efff2c
+Unable to checkout '03dc58f782c7ac4fe65cecbb9d459e95d8efff2c' in submodule path 'matlab'
+```
+
+then you'll need to update your forks from upstream and then re-run 
+`git submodule update`.
 
 Additionally, if you wish to have access to the upstream repo, i.e.
 (`the-virtual-brain/tvb-*`) you'll need to add this explicitly in
