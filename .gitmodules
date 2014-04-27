@@ -1,3 +1,18 @@
 [submodule "docs"]
 	path = docs
 	url = https://github.com/the-virtual-brain/tvb-docs.git
+[submodule "data"]
+	path = data
+	url = https://github.com/the-virtual-brain/tvb-data
+[submodule "framework"]
+	path = framework
+	url = https://github.com/the-virtual-brain/tvb-framework
+[submodule "geodesic"]
+	path = geodesic
+	url = https://github.com/the-virtual-brain/tvb-geodesic
+[submodule "matlab"]
+	path = matlab
+	url = https://github.com/the-virtual-brain/tvb-matlab
+[submodule "library"]
+	path = library
+	url = https://github.com/the-virtual-brain/tvb-library
