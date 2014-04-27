@@ -7,3 +7,5 @@ do
 	export PYTHONPATH=$cd/$d:$PYTHONPATH
 done
 
+source $1/bin/activate
+
