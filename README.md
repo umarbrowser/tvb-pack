@@ -26,6 +26,9 @@ where you have your own fork, modify the `.gitmodules` file correctly
 *just after* cloning `tvb-pack` and 
 *before* performing the `submodule` commands in the listing above.
 
+For each submodule, if you plan to make changes, make sure to checkout
+the master or trunk branch first.
+
 In case you have your own forks of each of the submodules, running
 
 ```

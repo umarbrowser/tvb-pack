@@ -2,7 +2,7 @@
 
 cd=$(pwd)
 
-for d in geodesic library framework data;
+for d in geodesic library framework data extra;
 do
 	export PYTHONPATH=$cd/$d:$PYTHONPATH
 done
