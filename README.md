@@ -15,6 +15,7 @@ In the first case, you should fork this repo and clone it, e.g.
 
 ```bash
 git clone git@github.com:user/tvb-pack tvb
+cd tvb
 git submodule init
 git submodule update
 ```
