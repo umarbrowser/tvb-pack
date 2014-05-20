@@ -50,7 +50,8 @@ then you'll need to update your forks from upstream and then re-run
 
 Additionally, if you wish to have access to the upstream repo, i.e.
 (`the-virtual-brain/tvb-*`) you'll need to add this explicitly in
-the submodule. 
+the submodule. (See [here](https://github.com/the-virtual-brain/tvb-pack/issues/4) if 
+this doesn't make sense)
 
 Lastly, if you merge from `upstream/tvb-pack`, you may have to update
 `.gitsubmodules` to reflect your forks. We'll setup a script to make 
