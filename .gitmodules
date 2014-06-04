@@ -1,18 +1,18 @@
-[submodule "docs"]
-	path = docs
-	url = https://github.com/the-virtual-brain/tvb-docs.git
-[submodule "data"]
-	path = data
-	url = https://github.com/the-virtual-brain/tvb-data
-[submodule "framework"]
-	path = framework
-	url = https://github.com/the-virtual-brain/tvb-framework
-[submodule "geodesic"]
-	path = geodesic
-	url = https://github.com/the-virtual-brain/tvb-geodesic
+[submodule "tvb-documentation"]
+	path = tvb-documentation
+	url = https://github.com/the-virtual-brain/tvb-documentation.git
+[submodule "tvb-data"]
+	path = tvb-data
+	url = https://github.com/the-virtual-brain/tvb-data.git
+[submodule "tvb-framework"]
+	path = tvb-framework
+	url = https://github.com/the-virtual-brain/tvb-framework.git
+[submodule "external-geodesic"]
+	path = external-geodesic
+	url = https://github.com/the-virtual-brain/tvb-geodesic.git
 [submodule "matlab"]
 	path = matlab
-	url = https://github.com/the-virtual-brain/tvb-matlab
-[submodule "library"]
-	path = library
-	url = https://github.com/the-virtual-brain/tvb-library
+	url = https://github.com/the-virtual-brain/tvb-matlab.git
+[submodule "tvb-library"]
+	path = tvb-library
+	url = https://github.com/the-virtual-brain/tvb-library.git
