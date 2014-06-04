@@ -2,7 +2,7 @@
 
 cd=$(pwd)
 
-for d in geodesic library framework data extra;
+for d in  tvb-library tvb-framework tvb-data tvb-documentation;
 do
 	export PYTHONPATH=$cd/$d:$PYTHONPATH
 done
