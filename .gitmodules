@@ -10,9 +10,6 @@
 [submodule "external-geodesic"]
 	path = external-geodesic
 	url = https://github.com/the-virtual-brain/tvb-geodesic.git
-[submodule "matlab"]
-	path = matlab
-	url = https://github.com/the-virtual-brain/tvb-matlab.git
 [submodule "tvb-library"]
 	path = tvb-library
 	url = https://github.com/the-virtual-brain/tvb-library.git
