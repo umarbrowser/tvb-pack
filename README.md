@@ -7,22 +7,32 @@ intended to make it easier to get started with TVB.
 
 ### Set up
 
-There are two usage scenarios: 1) use only the official repos for
-TVB 2) use your own forks of those repos. 
+There are a few usage scenarios, depending on what you wish to do. If you
+simply wish to try out TVB, clone this repo recursively, 
 
-In the first case, you should fork this repo and clone it, e.g.
-(replace `user` by your GitHub username):
+```
+git clone https://github.com/the-virtual-brain/tvb-pack.git tvb-pack
+cd tvb-pack
+git submodule init
+git submodule update
+```
+
+However, if you are going to use TVB for a project, we strongly encourage
+making your own fork of tvb-pack, so that your project can specify the versions
+of tvb-data, tvb-library, etc. that it requires. After clicking the "Fork" button
+on GitHub, do the following, replacing `user` by your GitHub username:
 
 ```bash
-git clone git@github.com:user/tvb-pack tvb
-cd tvb
+git clone git@github.com:user/tvb-pack.git tvb-pack
+cd tvb-pack
 git submodule init
 git submodule update
 ```
 
 Be patient, in some cases the repos are quite large.
 
-In the second case, you'll need to additionally, for each repo 
+If additionally you wish to use your own forks of tvb-library and other 
+submodules, you'll need to, for each repo 
 where you have your own fork, modify the `.gitmodules` file correctly
 *just after* cloning `tvb-pack` and 
 *before* performing the `submodule` commands in the listing above.
@@ -30,7 +40,7 @@ where you have your own fork, modify the `.gitmodules` file correctly
 For each submodule, if you plan to make changes, make sure to checkout
 the master or trunk branch first.
 
-In case you have your own forks of each of the submodules, running
+In case you have your own forks of all of the submodules, running
 
 ```
 scripts/update-origins.sh username
@@ -42,7 +52,7 @@ If the subsequent `git submodule update` produces errors like
 
 ```
 fatal: reference is not a tree: 03dc58f782c7ac4fe65cecbb9d459e95d8efff2c
-Unable to checkout '03dc58f782c7ac4fe65cecbb9d459e95d8efff2c' in submodule path 'matlab'
+Unable to checkout '03dc58f782c7ac4fe65cecbb9d459e95d8efff2c' in submodule path 'tvb-data'
 ```
 
 then you'll need to update your forks from upstream and then re-run 
