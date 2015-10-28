@@ -1,9 +1,6 @@
 [submodule "tvb-documentation"]
 	path = tvb-documentation
 	url = https://github.com/the-virtual-brain/tvb-documentation.git
-[submodule "tvb-data"]
-	path = tvb-data
-	url = https://github.com/the-virtual-brain/tvb-data.git
 [submodule "tvb-framework"]
 	path = tvb-framework
 	url = https://github.com/the-virtual-brain/tvb-framework.git
@@ -14,3 +11,6 @@
 	path = tvb-library
 	url = https://github.com/the-virtual-brain/tvb-library.git
 	branch = trunk
+[submodule "tvb-data"]
+	path = tvb-data
+	url = https://github.com/the-virtual-brain/tvb-data.git
