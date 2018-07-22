@@ -1,0 +1,67 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<-SCRIPT
+#!/bin/bash
+
+echo "Installing The Virtual Brain Packages on virtual machine..."
+
+echo "Installing conda"
+
+# Get Miniconda and make it the main Python interpreter
+apt-get -qq update && apt-get -qq -y install curl bzip2 \
+&& curl -sSL https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -o /tmp/miniconda.sh \
+&& bash /tmp/miniconda.sh -bfp /usr/local \
+&& rm -rf /tmp/miniconda.sh \
+&& conda install -y python=2 \
+&& conda update conda \
+&& apt-get -qq -y remove curl bzip2 \
+&& apt-get -qq -y autoremove \
+&& apt-get autoclean \
+&& rm -rf /var/lib/apt/lists/* /var/log/dpkg.log \
+&& conda clean --all --yes
+
+echo "Installing TVB packages using conda"
+conda config --add channels conda-forge
+conda install mkl -y
+conda install tvb-framework -y
+pip install jaraco.functools
+
+# End the installation
+echo "Finished Installing TVB Packages."
+
+echo "Start the framwork"
+python -m tvb.interfaces.web.run WEB_PROFILE tvb.config
+echo "Your port 8080 should be free, as a CherryPy service \
+      will try to run there. open http://localhost:8080/ which is the \
+      way to interact with TVB Web Interface."
+SCRIPT
+
+Vagrant.configure("2") do |config|
+
+    hostname = "tvb-build.box"
+    locale = "en_GB.UTF.8"
+
+    # Box
+    config.vm.box = "ubuntu/trusty64"
+
+    # Shared folders
+    config.vm.synced_folder ".", "/srv"
+	
+	# Set port forwarded_port 
+	config.vm.network :forwarded_port, guest: 8080, host: 8080, auto_correct: true
+	
+	# Set virtualbox as a provider and customize 3GB as Ram
+	config.vm.provider "virtualbox" do |v|
+    	v.name = "(The-Virtual-Brain"
+    	v.customize ["modifyvm", :id, "--memory", "3072"]
+    end
+
+    # Setup
+    config.vm.provision :shell, :inline => "touch .hushlogin"
+    config.vm.provision :shell, :inline => "hostnamectl set-hostname #{hostname} && locale-gen #{locale}"
+	
+	# Download tvb package
+	config.vm.provision "shell", inline: $script 
+
+end
