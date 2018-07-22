@@ -57,11 +57,7 @@ Vagrant.configure("2") do |config|
     	v.customize ["modifyvm", :id, "--memory", "3072"]
     end
 
-    # Setup
-    config.vm.provision :shell, :inline => "touch .hushlogin"
-    config.vm.provision :shell, :inline => "hostnamectl set-hostname #{hostname} && locale-gen #{locale}"
-	
-	# Download tvb package
-	config.vm.provision "shell", inline: $script 
+    # Download tvb package
+    config.vm.provision "shell", inline: $script 
 
 end
