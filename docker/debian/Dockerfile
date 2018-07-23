@@ -14,7 +14,7 @@ RUN conda config --add channels conda-forge
 # 577MB that why i break it in to two form and the download will not fail
 RUN conda install mkl -y
 RUN conda install tvb-framework -y
-RUN pip install jaraco.functools
+RUN pip install jaraco.functools allensdk
 
 # Setup application
 CMD ["/bin/bash", "-c", "/opt/conda/bin/python -m tvb.interfaces.web.run WEB_PROFILE tvb.config"]
