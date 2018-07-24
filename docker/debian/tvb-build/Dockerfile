@@ -22,7 +22,7 @@ RUN pip install jaraco.functools allensdk
 
 # Move to /opt directory and git clone tvb-data
 RUN cd /opt && git clone https://github.com/the-virtual-brain/tvb-data.git
-# Install it because it does not require and unittest
+# Install it because it does not require any unittest
 RUN cd /opt/tvb-data && python setup.py install
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
@@ -30,7 +30,7 @@ RUN cd /opt && rm -r /tvb-data
 
 # Move to /opt directory and git clone tvb-geodesic
 RUN cd /opt && git clone https://github.com/the-virtual-brain/tvb-geodesic.git
-# Install it because it does not require and unittest
+# Install it because it does not require any unittest
 RUN cd /opt/tvb-geodesic && python setup.py install
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
