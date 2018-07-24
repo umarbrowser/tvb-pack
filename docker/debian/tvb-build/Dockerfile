@@ -13,9 +13,9 @@ RUN conda config --add channels conda-forge
 # Install all the third party tools needed for tvb packages
 RUN conda install networkx numpy numba numexpr matplotlib \
                   pytest scikit-learn scipy cython \
-				  BeautifulSoup4 cfflib cherrypy formencode genshi \
+		  BeautifulSoup4 cfflib cherrypy formencode genshi \
                   h5py networkx nibabel Pillow psutil pytest scipy simplejson \
-				  sqlalchemy sqlalchemy-migrate
+		  sqlalchemy sqlalchemy-migrate
 # Install the remaining 3rd party tools that does not exit on any conda channels
 # via python pypi	  
 RUN pip install jaraco.functools allensdk
