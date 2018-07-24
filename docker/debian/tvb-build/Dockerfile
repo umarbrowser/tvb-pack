@@ -14,7 +14,7 @@ RUN conda config --add channels conda-forge
 RUN conda install networkx numpy numba numexpr matplotlib \
                   pytest scikit-learn scipy cython \
 		  BeautifulSoup4 cfflib cherrypy formencode genshi \
-                  h5py networkx nibabel Pillow psutil pytest scipy simplejson \
+                  h5py networkx nibabel Pillow psutil pytest simplejson \
 		  sqlalchemy sqlalchemy-migrate
 # Install the remaining 3rd party tools that does not exit on any conda channels
 # via python pypi	  
