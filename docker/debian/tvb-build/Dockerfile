@@ -39,7 +39,8 @@ RUN cd /opt && rm -r /tvb-geodesic
 # Move to /opt directory and git clone tvb-library
 RUN cd /opt && git clone https://github.com/the-virtual-brain/tvb-library.git
 # run the pytest for the require unittest
-RUN cd /opt/tvb-library && pytest tvb/test
+RUN cd /opt/tvb-library
+RUN pytest tvb/test
 # Install it
 RUN python setup.py install
 # Remove the clone directory after everything, Because if we leave it making the image
@@ -49,7 +50,8 @@ RUN cd /opt && rm -r /tvb-library
 # Move to /opt directory and git clone tvb-framework
 RUN cd /opt && git clone https://github.com/the-virtual-brain/tvb-framework.git
 # run the pytest for the require unittest
-RUN cd /opt/tvb-framework && pytest tvb/tests/framework/interfaces/web/controllers/help_controller_test
+RUN cd /opt/tvb-framework
+RUN pytest tvb/tests/framework/interfaces/web/controllers/help_controller_test
 # Install it
 RUN python setup.py install
 # Remove the clone directory after everything, Because if we leave it making the image
