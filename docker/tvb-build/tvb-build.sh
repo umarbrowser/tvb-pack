@@ -6,7 +6,7 @@ clear
 # Move to /opt directory and git clone tvb-data
 cd /opt && git clone https://github.com/the-virtual-brain/tvb-data.git
 # Install it because it does not require any unittest
-cd /opt/tvb-data && python setup.py develop
+cd /opt/tvb-data && python setup.py install
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
 cd /opt && rm -rf /tvb-data
@@ -14,7 +14,7 @@ cd /opt && rm -rf /tvb-data
 # Move to /opt directory and git clone tvb-geodesic
 cd /opt && git clone https://github.com/the-virtual-brain/tvb-geodesic.git
 # Install it because it does not require any unittest
-cd /opt/tvb-geodesic && python setup.py develop
+cd /opt/tvb-geodesic && python setup.py install
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
 cd /opt && rm -rf /tvb-geodesic
@@ -25,7 +25,7 @@ cd /opt && git clone https://github.com/the-virtual-brain/tvb-library.git
 cd /opt/tvb-library
 pytest tvb/test
 # Install it
-python setup.py develop
+python setup.py install
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
 cd /opt && rm -rf /tvb-library
@@ -36,10 +36,14 @@ cd /opt && git clone https://github.com/the-virtual-brain/tvb-framework.git
 cd /opt/tvb-framework
 pytest tvb/tests/framework/interfaces/web/controllers/help_controller_test
 # Install it
-python setup.py develop
-# Create a virtual env for our building development
-conda create -n tvb_distribution_env python=2.7
-# Activate our env and install tvb-framework, cython, numpy and scipy because TVB depends on heavy native libraries.
-source /opt/conda/bin/activate tvb_distribution_env && python setup.py develop && conda install -y cython numpy scipy
+python setup.py install
 
+# Create a virtual env for our building development
+virtualenv tvb_distribution
+# Activate it
+source tvb_distribution/bin/activate && pip install --upgrade pip && pip install wheel
+# build the .whl
+python setup.py bdist_wheel
+# install it on our virtual env.
+pip install dist/tvb-framework.whl
 
