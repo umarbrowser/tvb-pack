@@ -21,10 +21,7 @@ RUN conda install networkx numpy numba numexpr matplotlib \
 RUN pip install jaraco.functools allensdk
 
 # Copy our bash file from current host directory to /opt docker gust.
-COPY source-build.sh /opt
+COPY tvb-build.sh /opt
 
 # Goto our /opt directory and start our bash file
 RUN cd /opt && /bin/bash tvb-build.sh
-
-# Setup application
-CMD ["/bin/bash", "-c", "/opt/conda/bin/python -m tvb.interfaces.web.run WEB_PROFILE tvb.config"]
