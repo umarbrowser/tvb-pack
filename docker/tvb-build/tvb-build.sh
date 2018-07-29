@@ -13,7 +13,7 @@ cd /opt && git clone https://github.com/the-virtual-brain/tvb-data.git
 cd /opt/tvb-data
 # build the .whl
 python setup.py bdist_wheel
-pip install dist/tvb_data-1.5.6-py2-none-any.whl
+pip install dist/*.whl
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
 cd /opt && rm -rf /tvb-data
@@ -24,7 +24,7 @@ cd /opt && git clone https://github.com/the-virtual-brain/tvb-geodesic.git
 cd /opt/tvb-geodesic
 # build the .whl
 python setup.py bdist_wheel
-pip install dist/tvb_gdist-1.5.6-cp27-cp27mu-linux_x86_64.whl
+pip install dist/*.whl
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
 cd /opt && rm -rf /tvb-geodesic
@@ -36,7 +36,7 @@ cd /opt/tvb-library
 pytest tvb/test
 # build the .whl
 python setup.py bdist_wheel
-pip install dist/tvb_library-1.5.6-py2-none-any.whl
+pip install dist/*.whl
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
 cd /opt && rm -rf /tvb-library
@@ -48,7 +48,7 @@ cd /opt/tvb-framework
 pytest tvb/tests/framework/interfaces/web/controllers/help_controller_test
 # build the .whl
 python setup.py bdist_wheel
-pip install dist/tvb_framework-1.5.6-py2-none-any.whl
+pip install dist/*.whl
 # Remove the clone directory after everything, Because if we leave it making the image
 # bigger in size.
 cd /opt && rm -rf /tvb-framework

@@ -18,7 +18,7 @@ RUN conda install networkx numpy numba numexpr matplotlib \
 		  sqlalchemy sqlalchemy-migrate
 # Install the remaining 3rd party tools that does not exit on any conda channels
 # via python pypi	  
-RUN pip install jaraco.functools allensdk virtualenv 
+RUN pip install jaraco.functools allensdk virtualenv
 
 # Copy our bash file from current host directory to /opt docker gust.
 COPY tvb-build.sh /opt
