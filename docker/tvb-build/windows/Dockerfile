@@ -1,13 +1,58 @@
 # Set the base image to use
-FROM microsoft/windowsservercore:latest
+FROM microsoft/vsts-agent:windows-servercore-10.0.14393
 
 # Set the file author
 MAINTAINER thevirtualbrain <tvb.admin@codemart.ro>
 
-# Install Chocolatey
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex
-# Install packages that we will want
-RUN choco install git.install python2 -y
+
+ENV chocolateyUseWindowsCompression=false
+
+# Install using chocolatey
+# Chocolatey is a software management solution unlike anything else you've ever experienced on Windows.
+# It focuses on simplicity, security, and #scalability. You write a software deployment in PowerShell once 
+# for any software (not just installers), then you can deploy it everywhere you have Windows with any solution 
+# that can manage systems (configuration management, endpoint management, etc) and track and manage updates of that software over time.
+RUN @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+
+RUN choco config set cachelocation C:\chococache
+
+RUN choco install \
+    git  \
+    python2 \
+    --confirm
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Install .NET Core
+ENV DOTNET_VERSION 1.1.1
+ENV DOTNET_DOWNLOAD_URL https://dotnetcli.blob.core.windows.net/dotnet/release/1.1.0/Binaries/$DOTNET_VERSION/dotnet-win-x64.$DOTNET_VERSION.zip
+
+RUN Invoke-WebRequest $Env:DOTNET_DOWNLOAD_URL -OutFile dotnet.zip; \
+    Expand-Archive dotnet.zip -DestinationPath $Env:ProgramFiles\dotnet -Force; \
+    Remove-Item -Force dotnet.zip
+
+# Install .NET Core
+ENV DOTNET_VERSION 1.0.4
+ENV DOTNET_DOWNLOAD_URL https://dotnetcli.blob.core.windows.net/dotnet/preview/Binaries/$DOTNET_VERSION/dotnet-win-x64.$DOTNET_VERSION.zip
+
+RUN Invoke-WebRequest $Env:DOTNET_DOWNLOAD_URL -OutFile dotnet.zip; \
+    Expand-Archive dotnet.zip -DestinationPath $Env:ProgramFiles\dotnet -Force; \
+    Remove-Item -Force dotnet.zip
+    
+# Install .NET Core SDK
+ENV DOTNET_SDK_VERSION 1.0.1
+ENV DOTNET_SDK_DOWNLOAD_URL https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-dev-win-x64.$DOTNET_SDK_VERSION.zip
+
+RUN Invoke-WebRequest $Env:DOTNET_SDK_DOWNLOAD_URL -OutFile dotnet.zip; \
+    Expand-Archive dotnet.zip -DestinationPath $Env:ProgramFiles\dotnet -Force; \
+    Remove-Item -Force dotnet.zip
+
+SHELL ["cmd", "/S", "/C"]
+
+RUN setx /M PATH "%PATH%;%ProgramFiles%\dotnet"
+
+# Trigger the population of the local package cache
+ENV NUGET_XMLDOC_MODE skip
 
 # Install 3rd party tools using pypi
 RUN pip install networkx numpy numba numexpr matplotlib \
@@ -16,56 +61,11 @@ RUN pip install networkx numpy numba numexpr matplotlib \
                   h5py networkx nibabel Pillow psutil pytest simplejson \
 		  sqlalchemy sqlalchemy-migrate jaraco.functools allensdk virtualenv
 
-# Move to C directory and create a opt directory
-RUN cd C:\ & mkdir opt
+# Copy our powershell script file from current host directory to C:\.
+COPY tvb-build.ps1 C:\
 
-# Create a virtual env for our building development
-RUN virtualenv tvb_distribution
-# Activate it
-RUN tvb_distribution\Scripts\activate
+# Set our working directory
+WORKDIR C:\
 
-# Move to \opt directory and git clone tvb-data
-RUN cd C:\opt & git clone https://github.com/the-virtual-brain/tvb-data.git
-# Install it because it does not require any unittest
-RUN cd \tvb-data
-# build the .whl
-RUN python setup.py bdist_wheel
-RUN pip install dist\*.whl
-# Remove the clone directory after everything, Because if we leave it making the image
-# bigger in size.
-RUN cd C:\opt & rmdir tvb-data
-
-# Move to \opt directory and git clone tvb-geodesic
-RUN cd C:\opt & git clone https://github.com/the-virtual-brain/tvb-geodesic.git
-# Install it because it does not require any unittest
-RUN cd C:\opt\tvb-geodesic
-# build the .whl
-RUN python setup.py bdist_wheel
-RUN pip install dist\*.whl
-# Remove the clone directory after everything, Because if we leave it making the image
-# bigger in size.
-RUN cd C:\opt & rmdir tvb-geodesic
-
-# Move to \opt directory and git clone tvb-library
-RUN cd C:\opt & git clone https://github.com/the-virtual-brain/tvb-library.git
-# run the pytest for the require unittest
-RUN cd C:\opt\tvb-library
-RUN pytest tvb\test
-# build the .whl
-RUN python setup.py bdist_wheel
-RUN pip install dist\*.whl
-# Remove the clone directory after everything, Because if we leave it making the image
-# bigger in size.
-RUN cd C:\opt & rmdir tvb-library
-
-# Move to \opt directory and git clone tvb-framework
-RUN cd C:\opt & git clone https://github.com/the-virtual-brain/tvb-framework.git
-# run the pytest for the require unittest
-RUN C:\opt\tvb-framework\
-RUN pytest tvb\tests\ramework\interfaces\web\controllers\help_controller_test
-# build the .whl
-RUN python setup.py bdist_wheel
-RUN pip install dist\*.whl
-# Remove the clone directory after everything, Because if we leave it making the image
-# bigger in size.
-RUN cd C:\opt\ && rmdir tvb-framework
+# Start our bash file
+CMD ["powershell", "./tvb-build.ps1"]
