@@ -1,58 +1,71 @@
-FROM microsoft/windowsservercore:ltsc2016
+# Set the base image to use
+FROM microsoft/windowsservercore:latest
 
-SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+# Set the file author
+MAINTAINER thevirtualbrain <tvb.admin@codemart.ro>
 
-ENV PYTHON_VERSION 2.7.15
-ENV PYTHON_RELEASE 2.7.15
+# Install Chocolatey
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex
+# Install packages that we will want
+RUN choco install git.install python2 -y
 
-RUN $url = ('https://www.python.org/ftp/python/{0}/python-{1}.amd64.msi' -f $env:PYTHON_RELEASE, $env:PYTHON_VERSION); \
-	Write-Host ('Downloading {0} ...' -f $url); \
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-	Invoke-WebRequest -Uri $url -OutFile 'python.msi'; \
-	\
-	Write-Host 'Installing ...'; \
-# https://www.python.org/download/releases/2.4/msi/
-	Start-Process msiexec -Wait \
-		-ArgumentList @( \
-			'/i', \
-			'python.msi', \
-			'/quiet', \
-			'/qn', \
-			'TARGETDIR=C:\Python', \
-			'ALLUSERS=1', \
-			'ADDLOCAL=DefaultFeature,Extensions,TclTk,Tools,PrependPath' \
-		); \
-	\
-# the installer updated PATH, so we should refresh our local value
-	$env:PATH = [Environment]::GetEnvironmentVariable('PATH', [EnvironmentVariableTarget]::Machine); \
-	\
-	Write-Host 'Verifying install ...'; \
-	Write-Host '  python --version'; python --version; \
-	\
-	Write-Host 'Removing ...'; \
-	Remove-Item python.msi -Force; \
-	\
-	Write-Host 'Complete.';
+# Install 3rd party tools using pypi
+RUN pip install networkx numpy numba numexpr matplotlib \
+                  pytest scikit-learn scipy cython wheel \
+		  BeautifulSoup4 cfflib cherrypy formencode genshi \
+                  h5py networkx nibabel Pillow psutil pytest simplejson \
+		  sqlalchemy sqlalchemy-migrate jaraco.functools allensdk virtualenv
 
-# if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION 18.0
+# Move to C directory and create a opt directory
+RUN cd C:\ & mkdir opt
 
-RUN Write-Host ('Installing pip=={0} ...' -f $env:PYTHON_PIP_VERSION); \
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
-	Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py'; \
-	python get-pip.py \
-		--disable-pip-version-check \
-		--no-cache-dir \
-		('pip=={0}' -f $env:PYTHON_PIP_VERSION) \
-	; \
-	Remove-Item get-pip.py -Force; \
-	\
-	Write-Host 'Verifying pip install ...'; \
-	pip --version; \
-	\
-	Write-Host 'Complete.';
+# Create a virtual env for our building development
+RUN virtualenv tvb_distribution
+# Activate it
+RUN tvb_distribution\Scripts\activate
 
-# install tvb-framework using pypi
-RUN pip install tvb-framework
-# start our framework
-CMD python -m tvb.interfaces.web.run WEB_PROFILE tvb.config
+# Move to \opt directory and git clone tvb-data
+RUN cd C:\opt & git clone https://github.com/the-virtual-brain/tvb-data.git
+# Install it because it does not require any unittest
+RUN cd \tvb-data
+# build the .whl
+RUN python setup.py bdist_wheel
+RUN pip install dist\*.whl
+# Remove the clone directory after everything, Because if we leave it making the image
+# bigger in size.
+RUN cd C:\opt & rmdir tvb-data
+
+# Move to \opt directory and git clone tvb-geodesic
+RUN cd C:\opt & git clone https://github.com/the-virtual-brain/tvb-geodesic.git
+# Install it because it does not require any unittest
+RUN cd C:\opt\tvb-geodesic
+# build the .whl
+RUN python setup.py bdist_wheel
+RUN pip install dist\*.whl
+# Remove the clone directory after everything, Because if we leave it making the image
+# bigger in size.
+RUN cd C:\opt & rmdir tvb-geodesic
+
+# Move to \opt directory and git clone tvb-library
+RUN cd C:\opt & git clone https://github.com/the-virtual-brain/tvb-library.git
+# run the pytest for the require unittest
+RUN cd C:\opt\tvb-library
+RUN pytest tvb\test
+# build the .whl
+RUN python setup.py bdist_wheel
+RUN pip install dist\*.whl
+# Remove the clone directory after everything, Because if we leave it making the image
+# bigger in size.
+RUN cd C:\opt & rmdir tvb-library
+
+# Move to \opt directory and git clone tvb-framework
+RUN cd C:\opt & git clone https://github.com/the-virtual-brain/tvb-framework.git
+# run the pytest for the require unittest
+RUN C:\opt\tvb-framework\
+RUN pytest tvb\tests\ramework\interfaces\web\controllers\help_controller_test
+# build the .whl
+RUN python setup.py bdist_wheel
+RUN pip install dist\*.whl
+# Remove the clone directory after everything, Because if we leave it making the image
+# bigger in size.
+RUN cd C:\opt\ && rmdir tvb-framework
