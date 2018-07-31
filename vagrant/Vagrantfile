@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrant boxes are usually 8 GB, so we create a separate disk to hold
+# work files, cf https://gist.github.com/leifg/4713995. This also the
+# file we can share to speed up setup.
+# Reference on https://github.com/the-virtual-brain/tvb-recon/blob/master/Vagrantfile
+
+work_disk = 'tvb_distribution.vdi'
+
+Vagrant.configure("2") do |config|
+
+    # Box
+    config.vm.box = "debian/stretch64"
+
+    # Shared folders
+    #config.vm.synced_folder ".", "/opt"
+	
+	# Set port forwarded_port 
+	config.vm.network :forwarded_port, guest: 8080, host: 8080, auto_correct: true
+	
+	# Set virtualbox as a provider and customize 3GB as Ram.
+	config.vm.provider "virtualbox" do |vb|
+      vb.cpus = 4
+      vb.memory = "3072"
+      unless File.exist?(work_disk)
+        size_in_mb = 50 * 1024
+        vb.customize ['createhd', '--filename', work_disk, '--size', size_in_mb]
+      end
+      vb.customize ['storageattach', :id, '--storagectl', 'SCSI', '--port', 4, '--device', 0, '--type', 'hdd', '--medium', work_disk]
+    end
+	
+	# Download tvb package and run it.
+	 config.vm.provision "shell" do |s|
+    	s.path = "tvb-run.sh"
+    end
+
+end
