@@ -8,7 +8,7 @@ cd C:\ & mkdir opt
 rem fixing error: Microsoft Visual C++ 9.0 
 rem is required. Get it from http://aka.ms/vcpython27
 rem with is raise when setup.py bdist_wheel for tvb-geodesic and others.
-powershell C:\TVB\tvb-VCForPython27-fix.ps1
+powershell -noprofile -command "&{ start-process powershell -ArgumentList '-noprofile -file C:\TVB\tvb-VCForPython27-fix.ps1' -verb RunAs}"
 
 rem Create a virtual env for our building development
 virtualenv tvb_distribution
