@@ -62,8 +62,8 @@ RUN pip install networkx numpy numba numexpr matplotlib \
 RUN mkdir C:\TVB
 WORKDIR C:/TVB
 
-# Copy our powershell script file from current host directory to C:\.
-COPY ./tvb-build.cmd ./
+# Copy our powershell script file from current host directory to C:\TVB.
+COPY ./tvb-* ./
 
 # Start our bash file
 CMD ["tvb-build.cmd"]
