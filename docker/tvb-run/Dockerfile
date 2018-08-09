@@ -10,6 +10,7 @@ RUN apt-get -y install linux-headers-amd64 build-essential libc-dev gcc
 
 RUN conda config --add channels conda-forge
 RUN conda install tvb-framework -y
+RUN conda install matplotlib=2.0.2
 RUN pip install jaraco.functools allensdk
 
 # Setup application
