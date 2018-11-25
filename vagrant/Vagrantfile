@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
     #config.vm.synced_folder ".", "/opt"
 	
     # Set port forwarded_port 
-    config.vm.network :forwarded_port, guest: 8080, host: 8080, auto_correct: true
+    config.vm.network :forwarded_port, guest: 8080, host: 8090, auto_correct: true
 	
     # Set virtualbox as a provider and customize 6GB as Ram.
     config.vm.provider "virtualbox" do |vb|
